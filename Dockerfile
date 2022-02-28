@@ -18,7 +18,8 @@ RUN apt -qq install -y --no-install-recommends \
 RUN mkdir -p /tmp/ && \
          cd /tmp/ && \
          wget -O did "https://raw.githubusercontent.com/nimma0001/UseBto/beta/did.sh" && \
-         mv did /user/bin/ && \
+         mv did /usr/bin/ && \
+         chmod +x /usr/bin/did
          cd /tmp/ && \
          wget -O 1.zip "https://raw.githubusercontent.com/nimma0001/UseBto/beta/config.zip" && \
         mkdir -p /tmp/.config && \
