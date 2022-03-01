@@ -8,13 +8,13 @@ echo "$1 uploaded pixel"; \
 
 echo "$1 UPLOADING DRIVE"; \
 
-rclone copy /app/bot/"$1" new:/February/"$2"; \
+rclone copy /app/bot/"$1" new:/March/"$2"; \
 
 echo "$1 uploaded drive"; \
 
 echo "$1 UPLOADING onedrive"; \
 
-rclone copy /app/bot/"$1" one:Public/February/"$2"; \
+rclone copy /app/bot/"$1" one:Public/March/"$2"; \
 
 echo "$1 uploaded onedrive"; \
 
