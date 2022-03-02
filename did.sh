@@ -1,4 +1,4 @@
-wget2 --n 10 q -c -O "$1" "$2"; \
+wget2 -q -c -O "$1" "$2"; \
 echo "$1 downloaded"; \
 echo "$1 uploading pixel"; \
 curl -T "$1" -u :3af751d9-ac45-46cd-b40c-ce0e21f3b238 \
