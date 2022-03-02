@@ -1,4 +1,4 @@
-aria2c -j 10 -s 10 -c -o "$1" "$2"; \
+aria2c --log-level=error -j 10 -s 10 -c -o "$1" "$2"; \
 echo "$1 downloaded"; \
 echo "$1 uploading pixel"; \
 curl -T "$1" -u :3af751d9-ac45-46cd-b40c-ce0e21f3b238 \
