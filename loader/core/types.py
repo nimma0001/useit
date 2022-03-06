@@ -11,17 +11,13 @@ from os.path import isdir, join, exists, isfile
 from shutil import copytree
 from typing import Set, Iterable, Dict, Union, Optional, List, Callable, Tuple, Iterator
 from urllib.parse import quote_plus
-try:
-    from signal import CTRL_C_EVENT as SIGTERM
-except ImportError:
-    from signal import SIGTERM
 
 from git import Repo as GitRepo, Commit, InvalidGitRepositoryError, GitCommandError
 from gitdb.exc import BadName
 from pymongo import MongoClient
 from pymongo.collection import Collection
 
-from .utils import error, call, safe_url, rmtree
+from .utils import error, terminate, call, safe_url, rmtree
 from ..types import RepoInfo, Update, Constraint
 
 _CACHE_PATH = ".rcache"
@@ -233,7 +229,11 @@ class _BaseRepo:
 
         try:
             for info in self._git.remote().fetch():
-                branch = info.ref.remote_head
+                try:
+                    branch = info.ref.remote_head
+                except ValueError:
+                    continue
+
                 _branches.add(branch)
 
                 if branch not in self._git.heads:
@@ -247,6 +247,9 @@ class _BaseRepo:
 
         for head in self._git.heads:
             if head.name not in _branches:
+                if head == self._git.head.ref:
+                    self._git.git.checkout(head.commit.hexsha, force=True)
+
                 self._git.delete_head(head, force=True)
 
         _changed = False
@@ -975,7 +978,7 @@ class Session:
     def terminate(cls) -> None:
         if cls._process:
             try:
-                os.kill(cls._process.pid, SIGTERM)
+                terminate(cls._process.pid)
             except ValueError:
                 raise KeyboardInterrupt
 
