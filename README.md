@@ -6,6 +6,7 @@ This project helps to manage unlimited plugins repos with one [core repo](https:
 
 * optimized plugins structure
 * unlimited public and private plugins repos support
+* custom core repo support
 * priority handling
 * version controlling
 * branch switching
@@ -23,3 +24,10 @@ This project helps to manage unlimited plugins repos with one [core repo](https:
 you can fork and edit or refer our [official plugins repo](https://github.com/UsergeTeam/Userge-Plugins)
 to get familiar with the new structure.
 Also, you can check [custom plugins repo](https://github.com/UsergeTeam/Custom-Plugins) to get a better idea.
+
+## Custom Core Repo
+
+set these env vars
+
+* `CORE_REPO` - repo url (default | https://github.com/UsergeTeam/Userge)
+* `CORE_BRANCH` - branch name (default | master)
