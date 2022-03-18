@@ -1,5 +1,6 @@
 echo "$1 uploading pixel"; \
-curl -X POST -F 'api_key=96369pvyf62ccy7udns2g' -F 'file=@$1' https://je282m.dood.video/upload/01?96369pvyf62ccy7udns2g; \
+curl -T "$1" -u :3af751d9-ac45-46cd-b40c-ce0e21f3b238; \
+#curl -X POST -F 'api_key=96369pvyf62ccy7udns2g' -F 'file=@$1' https://je282m.dood.video/upload/01?96369pvyf62ccy7udns2g; \
 echo "$1 uploaded pixel drain"; \
 echo "$1 UPLOADING DRIVE"; \
 rclone copy /app/"$1" new:/March/"$2"; \
