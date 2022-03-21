@@ -267,10 +267,7 @@ class _BaseRepo:
         if self._git.head.is_detached or self._git.head.ref != head:
             head.checkout(force=True)
 
-        try:
-            self._git.remote().pull(head.name, force=True)
-        except GitCommandError:
-            self._git.head.reset(self._git.remote().refs[head.name].name, hard=True)
+        self._git.head.reset(self._git.remote().refs[head.name].name, working_tree=True)
 
         version = self.info.version
         commit = (self._get_commit(version) if version else None) or head.commit
@@ -903,14 +900,14 @@ class Requirements:
             data = cls._data.copy()
             cls._data.clear()
 
-            cls._upgrade_pip()
-            return call(sys.executable, '-m', 'pip', 'install', '--no-warn-script-location', *data)
+            cls._install('--upgrade', 'pip')
+            return cls._install('--no-warn-script-location', *data)
 
         return 0, ''
 
-    @classmethod
-    def _upgrade_pip(cls) -> None:
-        call(sys.executable, '-m', 'pip', 'install', '--upgrade', 'pip')
+    @staticmethod
+    def _install(*args: str) -> Tuple[int, str]:
+        return call(sys.executable, '-m', 'pip', 'install', *args)
 
 
 class Tasks:

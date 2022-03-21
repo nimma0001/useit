@@ -12,7 +12,7 @@ from .checks import do_checks
 from .menu import main_menu
 from .methods import fetch_core, fetch_repos
 from .types import Repos, Constraints, Sig, Requirements, Session, Tasks
-from .utils import log, error, get_client_type, safe_url, grab_conflicts, clean_core, \
+from .utils import log, error, call, get_client_type, safe_url, grab_conflicts, clean_core, \
     clean_plugins, print_logo
 from .. import __version__
 from ..userge.main import run
@@ -45,7 +45,13 @@ def init_core() -> None:
 
     if loader_version:
         if __version__ < loader_version:
-            error(f"loader update required!, min version: {loader_version} current: {__version__}")
+            log("\tUpdating loader to latest ...")
+
+            code, err = call("git", "pull")
+            if code:
+                error(f"error code: [{code}]\n{err}")
+
+            raise InterruptedError
 
     Requirements.update(core.grab_req())
 
@@ -125,9 +131,19 @@ def init_repos() -> None:
 
                 if conf.envs:
                     for env in conf.envs:
-                        if not os.environ.get(env):
-                            reason = f"env {env} is required"
-                            break
+                        if '|' in env:
+                            parts = tuple(filter(None, map(str.strip, env.split('|'))))
+
+                            for part in parts:
+                                if os.environ.get(part):
+                                    break
+                            else:
+                                reason = f"one of envs {', '.join(parts)} is required"
+                                break
+                        else:
+                            if not os.environ.get(env):
+                                reason = f"env {env} is required"
+                                break
 
                     if reason:
                         break
@@ -270,6 +286,8 @@ def initialize() -> None:
         do_checks()
         check_args()
         run_loader()
+    except InterruptedError:
+        raise
     except Exception as e:
         error(str(e))
 
