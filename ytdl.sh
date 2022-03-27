@@ -1,4 +1,4 @@
-yt-dlp -S +res:"$1",+ext:mp4  --prefer-ffmpeg "$2"; \
+yt-dlp -S +res:"$1",+ext:mp4  --prefer-ffmpeg -o "$2" "$3"; \
 
 echo "download completed $1"; \
 
