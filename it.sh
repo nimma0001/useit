@@ -7,7 +7,7 @@ echo "$1 uploaded pixel drain"; \
 #rclone copy /app/"$1" new:/April/"$2"; \
 #echo "$1 uploaded drive"; \
 echo "$1 UPLOADING onedrive"; \
-rclone copy /app/"$1" one:Public/May/"$2"; \
+rclone copy /app/"$1" one:Public/June/"$2"; \
 echo "$1 uploaded onedrive"; \
 #telegram-upload --no-thumbnail --force-file --to "@myusersgbot" "$1"; \
 #echo "$1 uploaded to telegram"; \
