@@ -11,7 +11,9 @@ RUN apt -qq install -y --no-install-recommends \
     gnupg2 \
     unzip \
     wget \
-    ffmpeg
+    ffmpeg \
+    rclone \
+    wget2
 
 # install chrome
 RUN mkdir -p /tmp/ && \
